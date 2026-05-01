@@ -2,9 +2,25 @@ $( document ).ready(function() {
     
     /*------------------------------ Page Scrolling ----------------------*/
     
+    function smoothScrollTo($target) {
+        if (!$target || !$target.length) {
+            return;
+        }
+        var targetTop = $target.offset().top;
+        if (window && typeof window.scrollTo === 'function') {
+            window.scrollTo({
+                top: targetTop,
+                behavior: 'smooth'
+            });
+        } else {
+            $('html, body').stop().animate({
+                scrollTop: targetTop
+            }, 700, 'swing');
+        }
+    }
+
     $(document).on('click', '.nav-item', function(event) {
         var $anchor = $(this);
-        event.preventDefault();
         var targetSelector = $anchor.attr('href');
         if (!targetSelector || targetSelector.charAt(0) !== '#') {
             return;
@@ -15,16 +31,12 @@ $( document ).ready(function() {
             return;
         }
 
-        // Use default jQuery easing to avoid runtime errors
-        // when easing plugins are unavailable.
-        $('html, body').stop().animate({
-            scrollTop: $target.offset().top
-        }, 700, 'swing');
+        event.preventDefault();
+        smoothScrollTo($target);
     });
     if (icon_gift) {
         $(document).on('click', '.gifts', function(event) {
             var $anchor = $(this);
-            event.preventDefault();
             var targetSelector = $anchor.attr('href');
             if (!targetSelector || targetSelector.charAt(0) !== '#') {
                 return;
@@ -34,9 +46,8 @@ $( document ).ready(function() {
             if (!$target.length) {
                 return;
             }
-            $('html, body').stop().animate({
-                scrollTop: $target.offset().top
-            }, 700, 'swing');
+            event.preventDefault();
+            smoothScrollTo($target);
         });
     }
     
@@ -443,7 +454,20 @@ $( document ).ready(function() {
 
     /*------------------------------ WOW Script ----------------------*/
 
-    new WOW().init();   
+    new WOW().init();
+
+    // Fallback when WOW animation hooks fail:
+    // keep hidden elements readable instead of blank sections.
+    setTimeout(function() {
+        $('.wow').each(function() {
+            if ($(this).css('visibility') === 'hidden') {
+                $(this).css({
+                    visibility: 'visible',
+                    'animation-name': 'none'
+                });
+            }
+        });
+    }, 2500);
     
 });
 
