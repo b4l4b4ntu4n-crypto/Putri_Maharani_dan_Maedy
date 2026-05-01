@@ -2,20 +2,43 @@ $( document ).ready(function() {
     
     /*------------------------------ Page Scrolling ----------------------*/
     
-    $('.nav-item').bind('click', function(event) {
+    $(document).on('click', '.nav-item', function(event) {
         var $anchor = $(this);
-        $('html, body').stop().animate({
-            scrollTop: $($anchor.attr('href')).offset().top
-        }, 1500, 'easeInOutExpo');
+        var targetSelector = $anchor.attr('href');
+        if (!targetSelector || targetSelector.charAt(0) !== '#') {
+            return;
+        }
+
+        var $target = $(targetSelector);
+        if (!$target.length) {
+            return;
+        }
+
         event.preventDefault();
+
+        // Use default jQuery easing to avoid runtime errors
+        // when easing plugins are unavailable.
+        $('html, body').stop().animate({
+            scrollTop: $target.offset().top
+        }, 700, 'swing');
     });
     if (icon_gift) {
-        $('.gifts').bind('click', function(event) {
+        $(document).on('click', '.gifts', function(event) {
             var $anchor = $(this);
-            $('html, body').stop().animate({
-                scrollTop: $($anchor.attr('href')).offset().top
-            }, 1500, 'easeInOutExpo');
+            var targetSelector = $anchor.attr('href');
+            if (!targetSelector || targetSelector.charAt(0) !== '#') {
+                return;
+            }
+
+            var $target = $(targetSelector);
+            if (!$target.length) {
+                return;
+            }
+
             event.preventDefault();
+            $('html, body').stop().animate({
+                scrollTop: $target.offset().top
+            }, 700, 'swing');
         });
     }
     
