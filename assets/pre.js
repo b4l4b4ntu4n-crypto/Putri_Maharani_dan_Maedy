@@ -22,6 +22,11 @@ function enableScroll() {
     document.documentElement.classList.add("invitation-opened");
     document.documentElement.style.overflow = "auto";
     document.body.style.overflow = "auto";
+
+    var homeSection = document.getElementById('home');
+    if (homeSection) {
+        homeSection.style.display = 'block';
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function () {

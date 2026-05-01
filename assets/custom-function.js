@@ -212,9 +212,9 @@ $( document ).ready(function() {
         $("#mp3-player").addClass("play");
       }
       if (bcksnd == "mp3") {
-        if (audio.paused) {
-            audio.play();
-        }
+        audio.play().catch(function(error){
+            console.warn('Audio play failed:', error);
+        });
       }
       if (bcksnd == "youtube") {
           if (ios) {
@@ -244,7 +244,7 @@ $( document ).ready(function() {
         $('#mp3-player').click(function(){
           if ($("#mp3-player").hasClass("play")) {
               if (bcksnd == "mp3") {
-                if (audio.played) {
+                if (audio && !audio.paused) {
                     audio.pause();
                 }
               }
@@ -254,9 +254,9 @@ $( document ).ready(function() {
             $("#mp3-player").removeClass("play");
           } else {
             if (bcksnd == "mp3") {
-             if (audio.paused) {
-                audio.play();
-             }
+             audio.play().catch(function(error){
+                console.warn('Audio play failed:', error);
+             });
             }
             if (bcksnd == "youtube") {
                 $('.youtube_song')[0].contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
