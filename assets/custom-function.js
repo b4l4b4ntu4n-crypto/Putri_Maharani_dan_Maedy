@@ -1,3 +1,26 @@
+function revealInvitationSections() {
+    var selectors = ['#event', '#location', '#gifts', '#rsvp', '#comment'];
+    for (var i = 0; i < selectors.length; i++) {
+        var section = document.querySelector(selectors[i]);
+        if (!section) {
+            continue;
+        }
+
+        var nodes = section.querySelectorAll('.wow, [data-wow-delay], [style*="visibility: hidden"], [style*="opacity: 0"]');
+        for (var j = 0; j < nodes.length; j++) {
+            nodes[j].style.visibility = 'visible';
+            nodes[j].style.opacity = '1';
+            nodes[j].style.animationName = 'none';
+        }
+    }
+}
+
+window.addEventListener('load', function() {
+    revealInvitationSections();
+    setTimeout(revealInvitationSections, 1200);
+    setTimeout(revealInvitationSections, 3000);
+});
+
 $( document ).ready(function() {
     
     /*------------------------------ Page Scrolling ----------------------*/
