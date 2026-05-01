@@ -4,6 +4,7 @@ $( document ).ready(function() {
     
     $(document).on('click', '.nav-item', function(event) {
         var $anchor = $(this);
+        event.preventDefault();
         var targetSelector = $anchor.attr('href');
         if (!targetSelector || targetSelector.charAt(0) !== '#') {
             return;
@@ -14,8 +15,6 @@ $( document ).ready(function() {
             return;
         }
 
-        event.preventDefault();
-
         // Use default jQuery easing to avoid runtime errors
         // when easing plugins are unavailable.
         $('html, body').stop().animate({
@@ -25,6 +24,7 @@ $( document ).ready(function() {
     if (icon_gift) {
         $(document).on('click', '.gifts', function(event) {
             var $anchor = $(this);
+            event.preventDefault();
             var targetSelector = $anchor.attr('href');
             if (!targetSelector || targetSelector.charAt(0) !== '#') {
                 return;
@@ -34,8 +34,6 @@ $( document ).ready(function() {
             if (!$target.length) {
                 return;
             }
-
-            event.preventDefault();
             $('html, body').stop().animate({
                 scrollTop: $target.offset().top
             }, 700, 'swing');
