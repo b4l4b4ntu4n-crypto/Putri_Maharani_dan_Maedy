@@ -456,18 +456,38 @@ $( document ).ready(function() {
 
     new WOW().init();
 
-    // Fallback when WOW animation hooks fail:
-    // keep hidden elements readable instead of blank sections.
-    setTimeout(function() {
-        $('.wow').each(function() {
-            if ($(this).css('visibility') === 'hidden') {
-                $(this).css({
+    function forceRevealHiddenContent(scopeSelector) {
+        var $scope = scopeSelector ? $(scopeSelector) : $(document);
+        if (!$scope.length) {
+            return;
+        }
+
+        $scope.find('.wow, [data-wow-delay], [style*="visibility: hidden"]').each(function() {
+            var $el = $(this);
+            if ($el.css('visibility') === 'hidden') {
+                $el.css({
                     visibility: 'visible',
+                    opacity: '1',
                     'animation-name': 'none'
                 });
             }
         });
+    }
+
+    // Fallback when WOW animation hooks fail:
+    // keep hidden elements readable instead of blank sections.
+    setTimeout(function() {
+        forceRevealHiddenContent();
+        forceRevealHiddenContent('#location');
+        forceRevealHiddenContent('#comment');
+        forceRevealHiddenContent('#rsvp');
     }, 2500);
+
+    // Extra safety for late-rendered content inside problematic sections.
+    setTimeout(function() {
+        forceRevealHiddenContent('#location');
+        forceRevealHiddenContent('#comment');
+    }, 4500);
     
 });
 
