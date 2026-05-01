@@ -1,44 +1,56 @@
-// Get the current page scroll position
-var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+var scrollTop = 0;
+var scrollLeft = 0;
+var isScrollLocked = false;
 
-// Lock scroll
-window.onscroll = function () {
-    window.scrollTo(scrollLeft, scrollTop);
-};
-
-function enableScroll() {
-    console.log("enableScroll called");
-    // Unlock scroll
-    window.onscroll = null;
-    
-    // Add class to html to force overflow: auto
-    document.documentElement.classList.add('invitation-opened');
-    
-    // Fallback for immediate style application
-    document.documentElement.style.overflow = 'auto';
-    document.body.style.overflow = 'auto';
-    
-    // Remove unselectable attributes globally
-    document.querySelectorAll('[unselectable]').forEach(el => {
-        el.removeAttribute('unselectable');
-    });
-
-    // Remove any user-select: none styles
-    const allElements = document.querySelectorAll('*');
-    for (let i = 0; i < allElements.length; i++) {
-        if (allElements[i].style.userSelect === 'none') {
-            allElements[i].style.userSelect = 'auto';
+function lockScroll() {
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    isScrollLocked = true;
+    window.onscroll = function () {
+        if (isScrollLocked) {
+            window.scrollTo(scrollLeft, scrollTop);
         }
-    }
-
-    console.log("Scroll enabled with class and forced styles");
+    };
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
 }
 
+function enableScroll() {
+    isScrollLocked = false;
+    window.onscroll = null;
+
+    document.documentElement.classList.add("invitation-opened");
+    document.documentElement.style.overflow = "auto";
+    document.body.style.overflow = "auto";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    var coverButton = document.getElementById("button-cover");
+    var coverModal = document.getElementById("myModal");
+
+    // Lock only when the opening cover exists.
+    if (coverButton || coverModal) {
+        lockScroll();
+    } else {
+        enableScroll();
+    }
+
+    if (coverButton) {
+        coverButton.addEventListener("click", enableScroll);
+    }
+
+    // Safety fallback: never keep page locked forever.
+    setTimeout(function () {
+        if (isScrollLocked) {
+            enableScroll();
+        }
+    }, 6000);
+});
+
 // Preloader timeout fallback
-setTimeout(function() {
-  var preloader = document.getElementById('preloader');
-  if (preloader) {
-    preloader.style.display = 'none';
-  }
+setTimeout(function () {
+    var preloader = document.getElementById("preloader");
+    if (preloader) {
+        preloader.style.display = "none";
+    }
 }, 5000);
