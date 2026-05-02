@@ -1,0 +1,29 @@
+/* Custom CSS for background positioning fixes */
+
+.bg1, .bg2, .bg3 {
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* Specific backgrounds if needed */
+.bg1 {
+    background-image: url('assets/bg-1.webp');
+}
+
+.bg2 {
+    background-image: url('assets/bg-2.webp');
+}
+
+.bg3 {
+    background-image: url('assets/bg-3.webp'); /* Assuming there's bg-3.webp */
+}
+
+/* Additional positioning fixes for mobile */
+@media (max-width: 768px) {
+    .bg1, .bg2, .bg3 {
+        background-attachment: scroll;
+        background-size: cover;
+    }
+}
