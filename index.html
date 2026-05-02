@@ -154,6 +154,19 @@
     -ms-user-select: auto !important;
     user-select: auto !important;
   }
+  /* Make main page content sections more equal in height */
+  .side-right {
+    min-height: 100vh;
+  }
+  section[id], .row[id] {
+    min-height: calc(100vh - 90px);
+    display: block;
+  }
+  @media only screen and (max-width: 599px) {
+    section[id], .row[id] {
+      min-height: auto;
+    }
+  }
   </style>
   <script style="">
   window.addEventListener('load', function() {
